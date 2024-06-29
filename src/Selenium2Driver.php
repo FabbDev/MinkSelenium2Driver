@@ -485,7 +485,17 @@ JS;
             }
         }
         else {
-            $this->getWebDriverSession()->frame(array('id' => $name));
+            $frameQuery = $name;
+
+            if ($name) {
+                try {
+                    $frameQuery = $this->getWebDriverSession()->element('id', $name);
+                } catch (NoSuchElement $e) {
+                    $frameQuery = $this->getWebDriverSession()->element('name', $name);
+                }
+            }
+
+            $this->getWebDriverSession()->frame(array('id' => $frameQuery));
         }
     }
 
